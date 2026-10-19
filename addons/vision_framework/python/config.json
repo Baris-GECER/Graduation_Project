@@ -1,0 +1,17 @@
+{
+  "camera": {
+    "device_id": 0,
+    "width": 640,
+    "height": 480,
+    "fps": 30
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "modules": {
+    "hand_tracking": true,
+    "face_tracking": false,
+    "posture_tracking": false
+  }
+}

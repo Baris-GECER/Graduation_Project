@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dvbvpkxu8pbfd"]
+
+[ext_resource type="Script" uid="uid://cut3jcepgqy5v" path="res://test.gd" id="1_unat0"]
+
+[node name="VisionTest" type="Node2D" unique_id=1030495325]
+script = ExtResource("1_unat0")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1148160824]
+
+[node name="InstructionsLabel" type="Label" parent="UI" unique_id=506080589]
+offset_left = 328.0
+offset_top = 295.0
+offset_right = 900.0
+offset_bottom = 318.0
+text = "\"Move hand in front of camera. Pinch thumb and index finger to activate.\""
+metadata/_edit_use_anchors_ = true
+
+[node name="StatusLabel" type="Label" parent="UI" unique_id=1659243462]
+offset_left = 479.0
+offset_top = 168.0
+offset_right = 699.0
+offset_bottom = 191.0
+text = "\"Waiting for Vision Engine...\""
+metadata/_edit_use_anchors_ = true
+
+[node name="HandPointer" type="ColorRect" parent="." unique_id=1477348847]
+offset_right = 30.0
+offset_bottom = 30.0
+pivot_offset = Vector2(15, 15)
+color = Color(0, 1, 1, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="PinchIndicator" type="ColorRect" parent="." unique_id=1595780004]
+offset_left = 1052.0
+offset_right = 1152.0
+offset_bottom = 100.0
+color = Color(0.6666667, 0.6666667, 0.6666667, 1)

@@ -1,0 +1,14 @@
+# Godot specific
+.godot/
+.import/
+export.cfg
+export_presets.cfg
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
