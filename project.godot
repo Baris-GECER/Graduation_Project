@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Visual_Control(Gemini)"
+config/name="Visual_Control"
 run/main_scene="uid://dvbvpkxu8pbfd"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
