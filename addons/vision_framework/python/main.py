@@ -46,7 +46,7 @@ class WASDController:
     def __init__(self):
         self.calib_x = 0.5
         self.calib_y = 0.5
-        self.is_calibrated = False
+        self.is_joystick_active = False  # Changed from is_calibrated to act as a toggle state
         self.prev_pinching = False
         self.direction = "STOP"
         self.latest_payload = {"type": "frame_data", "hands": []}
@@ -90,16 +90,19 @@ async def camera_loop():
                 pinch_dist_px = math.hypot((thumb.x - index.x) * w, (thumb.y - index.y) * h)
                 is_pinching = (pinch_dist_px / min(w, h)) < 0.09
 
-                # Lock calibration origin ON INITIAL PINCH TRANSITION ONLY
+                # Toggle joystick state ON INITIAL PINCH TRANSITION ONLY
                 if is_pinching and not controller.prev_pinching:
-                    controller.calib_x = index.x
-                    controller.calib_y = index.y
-                    controller.is_calibrated = True
+                    controller.is_joystick_active = not controller.is_joystick_active
+                    
+                    # If turning ON, drop the anchor at the current index finger position
+                    if controller.is_joystick_active:
+                        controller.calib_x = index.x
+                        controller.calib_y = index.y
 
                 controller.prev_pinching = is_pinching
 
-                # Process WASD Direction WHILE PINCH IS HELD
-                if is_pinching and controller.is_calibrated:
+                # Process WASD Direction WHILE JOYSTICK IS ACTIVE (No longer requires holding the pinch)
+                if controller.is_joystick_active:
                     px_diff_x = (index.x - controller.calib_x) * w
                     px_diff_y = (index.y - controller.calib_y) * h
 
@@ -143,8 +146,8 @@ async def camera_loop():
             ] if hand_detected else []
         }
 
-        # Draw WASD Overlay HUD
-        if is_pinching and controller.is_calibrated:
+        # Draw WASD Overlay HUD based on the new toggle state
+        if controller.is_joystick_active:
             center_px_x = int(controller.calib_x * w)
             center_px_y = int(controller.calib_y * h)
             radius = int(DEAD_ZONE * min(w, h))
@@ -172,7 +175,7 @@ async def camera_loop():
             status_col = (0, 255, 255) if controller.direction != "STOP" else (0, 255, 0)
             cv2.putText(frame, f"WASD: {controller.direction}", (15, 25), font, 0.6, status_col, 2)
         else:
-            cv2.putText(frame, "Pinch and hold to activate WASD Joystick", (15, 25),
+            cv2.putText(frame, "Pinch once to toggle WASD Joystick", (15, 25),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 200, 255), 1)
 
         cv2.imshow("WASD Camera Feed", frame)
